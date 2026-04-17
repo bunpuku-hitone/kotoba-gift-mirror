@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>言葉の贈り物</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Yu Gothic UI", "Hiragino Sans", sans-serif;
+            background: #f7f2ee;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-frame {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            min-height: 100vh;
+            background-image: url("/static/washi_bg.jpg");
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .ai-image {
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            width: 170px;
+            height: auto;
+        }
+        .date-text {
+            position: absolute;
+            top: 50px;
+            left: 200px;
+            font-size: 20px;
+            color: #222222;
+            font-weight: bold;
+        }
+
+        .title-text {
+            position: absolute;
+            top: 90px;
+            left: 200px;
+            font-size: 28px;
+            color: #222222;
+            font-weight: bold;
+        }
+
+        .input-label {
+            position: absolute;
+            top: 220px;
+            left: 30px;
+            font-size: 13px;
+            color: #222222;
+            background: rgba(247, 242, 238, 0.75);
+            padding: 2px 6px;
+        }
+
+        .enter-button {
+            position: absolute;
+            top: 215px;
+            left: 340px;
+            width: 70px;
+            height: 28px;
+            border: none;
+            background: #d8cbb3;
+            color: #222222;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .input-box {
+            position: absolute;
+            top: 245px;
+            left: 30px;
+            width: 380px;
+            height: 60px;
+            font-size: 14px;
+            border: 1px solid #999;
+            box-sizing: border-box;
+            padding: 8px;
+            resize: none;
+            background: rgba(255, 255, 255, 0.85);
+            font-family: "Yu Gothic UI", "Hiragino Sans", sans-serif;
+        }
+
+        .reply-box {
+            position: absolute;
+            top: 330px;
+            left: 30px;
+            width: 380px;
+            min-height: 0;
+            box-sizing: border-box;
+            border: 1px solid #999;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 12px;
+            font-size: 14px;
+            color: #222222;
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+        .today-mode {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        @media (max-width: 480px) {
+            .phone-frame {
+                max-width: 100vw;
+            }
+
+            .input-box,
+            .reply-box {
+                width: calc(100% - 60px);
+            }
+
+            .enter-button {
+                left: auto;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <img src="/static/aiueo.png" alt="aiueo" class="ai-image">
+        
+        <div class="date-text">{{ date_text }}</div>
+        <div class="title-text">言葉の贈り物</div>
+
+        <form method="POST" onsubmit="document.getElementById('replyBox').innerText='返答を待っています...';">
+        <form method="POST" onsubmit="
+document.getElementById('replyBox').innerText='返答を待っています...';
+setTimeout(function(){ document.forms[0].submit(); }, 300);
+return false;
+">
+            <div class="input-label">あなたの言葉</div>
+            <button type="submit" class="enter-button">ENTER</button>   
+            <textarea name="user_text" class="input-box">{{ user_text }}</textarea>
+        </form>
+
+<div id="replyBox" class="reply-box {% if not reply %}today-mode{% endif %}">{% if reply %}{{ reply }}{% else %}{{ today_word }}{% endif %}</div>
+    </div>
+</body>
+</html>
