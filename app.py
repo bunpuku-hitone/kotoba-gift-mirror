@@ -50,6 +50,9 @@ def index():
         if not user_text:
             reply = ""
         else:
+            count = load_count()
+            count += 1
+            save_count(count)
             try:
                 response = client.responses.create(
                     model="gpt-4.1-mini",
