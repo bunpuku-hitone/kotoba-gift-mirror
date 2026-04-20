@@ -36,7 +36,7 @@
             position: absolute;
             top: 50px;
             left: 200px;
-            font-size: 20px;
+            font-size: 18px;
             color: #222222;
             font-weight: bold;
         }
@@ -49,12 +49,22 @@
             color: #222222;
             font-weight: bold;
         }
+        
+        .version-text {
+            position: absolute;
+            top: 129px;
+            left: 200px;
+            font-size: 12px;
+            color: #222222;
+            font-weight: bold;
+        }
 
         .input-label {
             position: absolute;
             top: 220px;
             left: 30px;
             font-size: 13px;
+            font-weight: bold;
             color: #222222;
             background: rgba(247, 242, 238, 0.75);
             padding: 2px 6px;
@@ -70,6 +80,7 @@
             background: #d8cbb3;
             color: #222222;
             font-size: 11px;
+            font-weight: bold;
             cursor: pointer;
         }
 
@@ -138,6 +149,7 @@ setTimeout(function(){ document.forms[0].submit(); }, 300);
 return false;
 ">
             <div class="input-label">あなたの言葉</div>
+            <div class="version-text">バージョン β-01</div>
             <button type="submit" class="enter-button">ENTER</button>   
             <textarea name="user_text" class="input-box">{{ user_text }}</textarea>
         </form>
