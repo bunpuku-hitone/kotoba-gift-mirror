@@ -32,6 +32,12 @@ def get_today_word():
     index = days_passed % len(words)
     return words[index]
 
+def is_english(text):
+    if not text:
+        return False
+    eng = sum(1 for c in text if c.isascii() and c.isalpha())
+    return (eng / len(text)) > 0.6
+
 def load_count():
     try:
         with open("counter.txt", "r") as f:
@@ -66,6 +72,11 @@ def index():
             count += 1
             save_count(count)
             
+        if is_english(user_text):
+            system_prompt = "Respond in English with a gentle, short essay."
+        else:
+            system_prompt = "日本語で、やさしく短いエッセイで返答してください。"
+    
             try:
                 response = client.responses.create(
                     model="gpt-4.1-mini",
@@ -76,7 +87,8 @@ def index():
                                 "静かに、やわらかく、説明しすぎず、余白を残す語りで返答する。"
                                 "出力は20秒程度で読める短い台本（ショートエッセイ）とする。"
                                 "語り手の名前は出さない。"
-                            )
+                                + system_prompt
+                            ),
                         },
                         {
                             "role": "user",
