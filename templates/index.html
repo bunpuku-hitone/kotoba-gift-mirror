@@ -154,7 +154,7 @@ document.getElementById('replyBox').innerText='返答を待っています...';
 setTimeout(function(){ document.forms[0].submit(); }, 300);
 return false;
 ">
-            <div class="input-label">あなたの言葉</div>
+            <button type="button" id="word-btn" class="input-label">あなたの言葉</button>
             <div class="version-text">バージョン β-02</div>
             <button type="submit" class="enter-button">ENTER</button>   
             <textarea name="user_text" class="input-box">{{ user_text }}</textarea>
@@ -162,5 +162,10 @@ return false;
 
 <div id="replyBox" class="reply-box {% if not reply %}today-mode{% endif %}">{% if reply %}{{ reply }}{% else %}{{ today_word }}{% endif %}</div>
     </div>
+<script>
+document.getElementById("word-btn").addEventListener("click", function() {
+    document.querySelector(".input-box").focus();
+});
+</script>
 </body>
 </html>
