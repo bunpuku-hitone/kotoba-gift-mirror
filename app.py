@@ -104,7 +104,6 @@ def get_db_count():
         return result[0] if result else 0
         
     count = get_db_count()
-    
     return render_template(
         "index.html",
         count=count,
