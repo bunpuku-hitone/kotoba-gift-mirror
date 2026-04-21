@@ -96,6 +96,7 @@ def index():
                         }
                     ]
                 )
+                reply = response.output_text
 
                 reply = response.output_text.strip()
 
