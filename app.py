@@ -6,11 +6,11 @@ import psycopg2
 conn = psycopg2.connect("postgresql://postgres.pzwyezklgdorszbleesz:hitone27182818@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres")
 cur = conn.cursor()
 
-cur.execute(
-    "INSERT INTO entries (app_name, user_key, input_text, output_text) VALUES (%s, %s, %s, %s)",
-    ("test_app", "test_user", "テスト入力", "テスト出力")
-)
-conn.commit()
+#cur.execute(
+#    "INSERT INTO entries (app_name, user_key, input_text, output_text) VALUES (%s, %s, %s, %s)",
+#    ("test_app", "test_user", "テスト入力", "テスト出力")
+#)
+#conn.commit()
 
 def load_words():
     with open("words.txt", "r", encoding="utf-8") as f:
