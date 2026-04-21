@@ -1,5 +1,10 @@
 from flask import Flask, render_template, request
 from openai import OpenAI
+
+import psycopg2
+
+conn = psycopg2.connect("postgresql://postgres:[YOUR-PASSWORD]@db.pzwyezklgdorszbleesz.supabase.co:5432/postgres")
+cur = conn.cursor()
 def load_words():
     with open("words.txt", "r", encoding="utf-8") as f:
         return [line.strip() for line in f if line.strip()]
