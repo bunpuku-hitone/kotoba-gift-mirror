@@ -99,7 +99,13 @@ def index():
             except Exception as e:
                 reply = f"（接続エラー）\n{e}"
 
-    count = load_count()
+    count = get_db_count()
+
+    def get_db_count():
+        cur.execute("SELECT COUNT(*) FROM entries")
+        result = cur.fetchone()
+        return result[0] if result else 0
+    
     return render_template(
         "index.html",
         count=count,
