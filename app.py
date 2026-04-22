@@ -3,8 +3,10 @@ from openai import OpenAI
 
 import psycopg2
 
-conn = psycopg2.connect("postgresql://postgres.pzwyezklgdorszbleesz:hitone27182818@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres")
-cur = conn.cursor()
+DATABASE_URL = "postgresql://postgres.pzwyezklgdorszbleesz:hitone27182818@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres"
+
+def get_db_connection():
+    return psycopg2.connect(DATABASE_URL)
 
 #cur.execute(
 #    "INSERT INTO entries (app_name, user_key, input_text, output_text) VALUES (%s, %s, %s, %s)",
@@ -56,9 +58,18 @@ api_key = os.getenv("OPENAI_API_KEY")
 )
 
 def get_db_count():
-    cur.execute("SELECT COUNT(*) FROM entries")
-    result = cur.fetchone()
-    return result[0] if result else 0
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("SELECT COUNT(*) FROM entries")
+        result = cur.fetchone()
+        return result[0] if result else 0
+    except Exception as e:
+        print("get_db_count error:", e)
+        return 0
+    finally:
+        cur.close()
+        conn.close()
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -114,11 +125,19 @@ def index():
                 if not reply:
                     reply = "（返答が空でした）"
 
-                cur.execute(
-                    "INSERT INTO entries (app_name, user_key, input_text, output_text) VALUES (%s, %s, %s, %s)",
-                    ("aiuemon", "user1", user_text, reply)
-                )
-                conn.commit()
+                db_conn = get_db_connection()
+                db_cur = db_conn.cursor()
+                try:
+                    db_cur.execute(
+                        "INSERT INTO entries (app_name, user_key, input_text, output_text) VALUES (%s, %s, %s, %s)",
+                        ("aiuemon", "user1", user_text, reply)
+                    )
+                    db_conn.commit()
+                except Exception as e:
+                    print("insert error:", e)
+                finally:
+                    db_cur.close()
+                    db_conn.close()
 
             except Exception as e:
                 reply = f"（接続エラー）\n{e}"
