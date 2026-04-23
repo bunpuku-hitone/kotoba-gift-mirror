@@ -147,12 +147,16 @@
         <div class="count-text">CT= {{ count }} </div>
         <div class="date-text">{{ date_text }}</div>
         <div class="title-text">言葉の贈り物</div>
-
+        <button type="button" onclick="showTone()">言葉の味付け</button>
+        
         <form method="POST" onsubmit="
 document.getElementById('replyBox').innerText='返答を待っています...';
 setTimeout(function(){ document.forms[0].submit(); }, 300);
 return false;
 ">
+            <div id="toneArea" style="display:{{ 'block' if tone else 'none' }}; margin-top:8px;">
+                <input type="text" name="tone" value="{{ tone }}" placeholder="味付け">
+            </div>
             <button type="button" id="word-btn" class="input-label">あなたの言葉</button>
             <div class="version-text">バージョン β-05</div>
             <button type="submit" class="enter-button">ENTER</button>   
@@ -175,6 +179,11 @@ document.getElementById("word-btn").addEventListener("click", function() {
     btn.textContent = "入力してください";
     setTimeout(function(){ btn.textContent = "あなたの言葉"; }, 1500);
 });
+</script>
+    <script>
+    function showTone() {
+        document.getElementById("toneArea").style.display = "block";
+    }
 </script>
 </body>
 </html>
