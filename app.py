@@ -80,6 +80,7 @@ def index():
 
     if request.method == "POST":
         user_text = request.form.get("user_text", "").strip()
+        tone = request.form.get("tone", "")
 
         if not user_text:
             return render_template(
@@ -88,7 +89,8 @@ def index():
                 reply="",
                 date_text=get_date_text(),
                 user_text="",
-                today_word=today_word
+                today_word=today_word,
+                tone=tone,
             )
         else:
             count = load_count()
@@ -150,7 +152,8 @@ def index():
         reply=reply,
         date_text=get_date_text(),
         user_text=user_text,
-        today_word=today_word
+        today_word=today_word,
+        tone=tone,
     )
 
 if __name__ == "__main__":
