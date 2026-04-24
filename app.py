@@ -40,6 +40,11 @@ def is_english(text):
     eng = sum(1 for c in text if c.isascii() and c.isalpha())
     return (eng / len(text)) > 0.6
 
+def load_enjoy_words():
+    with open("enjoy.txt", "r", encoding="utf-8") as f:
+        return [line.strip() for line in f if line.strip()]
+enjoy_words = load_enjoy_words()
+
 def load_count():
     try:
         with open("counter.txt", "r") as f:
@@ -155,6 +160,17 @@ def index():
         user_text=user_text,
         today_word=today_word,
         tone=tone,
+    )
+
+    return render_template(
+        "index.html",
+        reply=reply,
+        today_word=today_word,
+        user_text=user_text,
+        tone=tone,
+        count=count,
+        date_text=date_text,
+        enjoy_words=enjoy_words
     )
 
 if __name__ == "__main__":
