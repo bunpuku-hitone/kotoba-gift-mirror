@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from openai import OpenAI
 
 import psycopg2
@@ -58,6 +58,7 @@ def save_count(count):
         f.write(str(count))
 
 app = Flask(__name__)
+app.secret_key = "hitone_beta07"
 mode = "gift"
 import os
 client = OpenAI(
@@ -80,6 +81,8 @@ def get_db_count():
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    mode = session.get("mode", "gift")
+    
     reply = ""
     user_text = ""
     tone = ""
@@ -87,12 +90,7 @@ def index():
 
 
     if request.method == "POST":
-        global mode
-        if "toggle_mode" in request.form:
-            if mode == "gift":
-                mode = "aiemon"
-            else:
-                mode = "gift"
+
         user_text = request.form.get("user_text", "").strip()
         tone = request.form.get("tone", "")
 
@@ -186,14 +184,17 @@ def index():
         date_text=date_text,
         enjoy_words=enjoy_words
     )
-    @app.route("/toggle_mode", methods=["POST"])
-    def toggle_mode():
-        global mode
-        if mode == "gift":
-            mode = "aiemon"
-        else:
-            mode = "gift"
-        return "", 204
+    
+@app.route("/toggle_mode", methods=["POST"])
+def toggle_mode():
+    current = session.get("mode", "gift")
 
+    if current == "gift":
+        session["mode"] = "aiemon"
+    else:
+        session["mode"] = "gift"
+
+    return "", 204
+    
 if __name__ == "__main__":
     app.run(debug=True)
