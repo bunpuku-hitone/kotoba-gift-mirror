@@ -182,6 +182,9 @@
         <div class="count-text">ハッピー {{ count }} </div>
         <div class="date-text">{{ date_text }}</div>
         <div class="title-text">言葉の贈り物</div>
+        <div style="position:absolute; top:120px; left:200px; font-size:12px;">
+        {% if mode == "aiemon" %}あい右衛門と{% else %}言葉の贈りもの{% endif %}
+        </div>
         <button type="submit" id="tone-btn" name="toggle_mode" value="1" onclick="showTone()">言葉の味付け</button>
         <button type="button" id="enjoy-btn">お楽しみ言葉</button>
         
