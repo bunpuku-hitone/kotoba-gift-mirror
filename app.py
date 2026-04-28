@@ -186,6 +186,14 @@ def index():
         date_text=date_text,
         enjoy_words=enjoy_words
     )
+    @app.route("/toggle_mode", methods=["POST"])
+    def toggle_mode():
+        global mode
+        if mode == "gift":
+            mode = "aiemon"
+        else:
+            mode = "gift"
+        return "", 204
 
 if __name__ == "__main__":
     app.run(debug=True)
