@@ -3,7 +3,8 @@ from openai import OpenAI
 
 import psycopg2
 
-DATABASE_URL = "postgresql://postgres.pzwyezklgdorszbleesz:hitone27182818@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres"
+import os
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_db_connection():
     return psycopg2.connect(DATABASE_URL)
