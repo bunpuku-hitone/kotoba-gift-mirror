@@ -58,6 +58,7 @@ def save_count(count):
         f.write(str(count))
 
 app = Flask(__name__)
+mode = "gift"
 import os
 client = OpenAI(
 api_key = os.getenv("OPENAI_API_KEY")
@@ -86,6 +87,12 @@ def index():
 
 
     if request.method == "POST":
+        global mode
+        if "toggle_mode" in request.form:
+            if mode == "gift":
+                mode = "aiemon"
+            else:
+                mode = "gift"
         user_text = request.form.get("user_text", "").strip()
         tone = request.form.get("tone", "")
 
