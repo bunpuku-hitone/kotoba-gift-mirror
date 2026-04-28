@@ -189,6 +189,8 @@
         <button type="button" id="enjoy-btn">お楽しみ言葉</button>
         
         <form id="mainForm" method="POST" onsubmit="
+        document.getElementById('replyBox').innerText='返答を待っています...';
+        ">
         document.getElementById('toggleModeInput').value='';
         document.getElementById('replyBox').innerText='返答を待っています...';
         setTimeout(function(){ document.forms[0].submit(); }, 300);
