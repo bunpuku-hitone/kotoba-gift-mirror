@@ -230,8 +230,12 @@ document.getElementById("enjoy-btn").addEventListener("click", function() {
         document.getElementById("toneArea").style.display = "block";
     }
     function toggleMode() {
-    fetch('/toggle_mode', { method: 'POST' })
-    .then(() => location.reload());
+        fetch('/toggle_mode', { method: 'POST' })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
     }
 </script>
 </body>
