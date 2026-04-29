@@ -6,6 +6,8 @@ import psycopg2
 import os
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+conversation_history = []
+
 def get_db_connection():
     return psycopg2.connect(DATABASE_URL)
 
@@ -110,12 +112,42 @@ def index():
             count += 1
             save_count(count)
 
+            aiuemon_system_prompt = """
+あなたは「あい右衛門」です。
+利用者と静かに会話する相手です。
+
+役割：
+・詩やエッセイを一方的に作るのではなく、会話として返す
+・直前の会話の流れを受けて、自然につづける
+・説明しすぎない
+・質問で誘導しない
+・短く、やわらかく返す
+
+返答方針：
+・前の発言の気持ちや話題を受ける
+・必要なら、ひとことだけ添える
+・会話の余白を残す
+・長文にしない
+・基本は2〜5文程度
+
+禁止：
+・説教しない
+・分析しすぎない
+・勝手に結論づけない
+・毎回質問で終わらない
+・「〜しましょう」と誘導しない
+
+口調：
+静かで、少し古風。
+あい右衛門として、相手のそばで受けとめる。
+"""
+
             if is_english(user_text):
                 system_prompt = "Respond ONLY in English. No Japanese."
             else:
                 system_prompt = "日本語で、やさしく短いエッセイで返答してください。"
             if mode == "aiemon":
-                system_prompt = "あい右衛門として会話調で返答する。"
+                system_prompt = aiuemon_system_prompt
 
             try:
                 response = client.responses.create(
