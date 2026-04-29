@@ -118,7 +118,7 @@ def index():
             count += 1
             save_count(count)
 
-            aiuemon_prompt = load_aiuemon_prompt()
+            aiuemon_system_prompt = load_aiuemon_prompt()
 
             if is_english(user_text):
                 system_prompt = "Respond ONLY in English. No Japanese."
