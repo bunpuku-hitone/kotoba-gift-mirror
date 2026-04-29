@@ -19,7 +19,7 @@
             width: 100%;
             max-width: 450px;
             min-height: 100vh;
-            background-image: url("/static/washi_bg.jpg");
+            background-image: url("{% if mode == 'aiemon' %}/static/washi_cream.png{% else %}/static/washi_bg.jpg{% endif %}");
             background-size: cover;
             background-position: center;
             overflow: hidden;
