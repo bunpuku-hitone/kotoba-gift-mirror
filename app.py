@@ -84,6 +84,7 @@ def get_db_count():
 @app.route("/", methods=["GET", "POST"])
 def index():
     mode = session.get("mode", "gift")
+    global conversation_history
     
     reply = ""
     user_text = ""
@@ -150,6 +151,7 @@ def index():
                 system_prompt = aiuemon_system_prompt
 
             try:
+                history_for_input = conversation_history if mode == "aiemon" else []
                 response = client.responses.create(
                     model="gpt-4.1-mini",
                     input=[
@@ -163,15 +165,21 @@ def index():
                                 + system_prompt
                             ),
                         },
+                        *history_for_input,
                         {
                             "role": "user",
-                            "content": f"ユーザーの言葉：{user_text}"
+                            "content": user_text
                         }
                     ]
                 )
                 #  reply = response.output[0].content[0].text
                 reply = response.output_text.strip()
-
+                
+                if mode == "aiemon":
+                    conversation_history.append({"role": "user", "content": user_text})
+                    conversation_history.append({"role": "assistant", "content": reply})
+                    conversation_history = conversation_history[-6:]
+                    
                 if not reply:
                     reply = "（返答が空でした）"
 
