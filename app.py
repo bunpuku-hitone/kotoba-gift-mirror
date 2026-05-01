@@ -182,7 +182,7 @@ def index():
                 ]
             )
 
-                        reply = response.output_text.strip()
+                    reply = response.output_text.strip()
 
                         return render_template(
                             "index.html",
