@@ -119,6 +119,45 @@ def get_db_count():
 @app.route("/", methods=["GET", "POST"])
 
 def create_reply(mode, user_text):
+    if mode == "concierge":
+    response = client.responses.create(
+    model="gpt-4.1-mini",
+    input=[
+    {
+        "role": "system",
+        "content": "最新の情報をもとに、事実のみを5件、箇条書きで簡潔に出力する。推測は禁止。"
+    },
+    {
+        "role": "user",
+        "content": user_text
+    }
+    ]
+    )
+    reply = response.output_text.strip()
+
+    response = client.responses.create(
+    model="gpt-4.1-mini",
+    input=[
+        {
+            "role": "system",
+            "content": (
+                "静かに、やわらかく、説明しすぎず、余白を残す語りで返答する。"
+                "出力は20秒程度で読める短い台本（ショートエッセイ）とする。"
+                "語り手の名前は出さない。"
+                "英語の場合は、中学レベルの単語だけで、短くやさしい文章にする。難しい単語は禁止する。"
+                + system_prompt
+            ),
+        },
+        *history_for_input,
+        {
+            "role": "user",
+            "content": user_text
+        }
+    ]
+    )
+    #  reply = response.output[0].content[0].text
+    reply = response.output_text.strip()
+    
     pass
 
 def save_entry(user_text, reply):
@@ -181,45 +220,7 @@ def index():
 
             try:
                 history_for_input = conversation_history if mode == "aiemon" else []
-                if mode == "concierge":
-                    response = client.responses.create(
-                    model="gpt-4.1-mini",
-                    input=[
-                    {
-                        "role": "system",
-                        "content": "最新の情報をもとに、事実のみを5件、箇条書きで簡潔に出力する。推測は禁止。"
-                    },
-                    {
-                        "role": "user",
-                        "content": user_text
-                    }
-                ]
-            )
 
-                    reply = response.output_text.strip()
-
-                response = client.responses.create(
-                    model="gpt-4.1-mini",
-                    input=[
-                        {
-                            "role": "system",
-                            "content": (
-                                "静かに、やわらかく、説明しすぎず、余白を残す語りで返答する。"
-                                "出力は20秒程度で読める短い台本（ショートエッセイ）とする。"
-                                "語り手の名前は出さない。"
-                                "英語の場合は、中学レベルの単語だけで、短くやさしい文章にする。難しい単語は禁止する。"
-                                + system_prompt
-                            ),
-                        },
-                        *history_for_input,
-                        {
-                            "role": "user",
-                            "content": user_text
-                        }
-                    ]
-                )
-                #  reply = response.output[0].content[0].text
-                reply = response.output_text.strip()
                 
                     if mode == "aiemon":
                         conversation_history.append({"role": "user", "content": user_text})
