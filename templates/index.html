@@ -240,8 +240,11 @@ document.getElementById("enjoy-btn").addEventListener("click", function() {
 <script>
 function updateTitle(mode) {
     const title = document.getElementById("title-text");
-    if (mode === "aiuemon") {
+
+    if (mode === "aiemon") {
         title.textContent = "あい右衛門と";
+    } else if (mode === "concierge") {
+        title.textContent = "コンセルジュ";
     } else {
         title.textContent = "言葉の贈り物";
     }
