@@ -3,6 +3,9 @@ from openai import OpenAI
 
 import psycopg2
 
+import requests
+from bs4 import BeautifulSoup
+
 import os
 DATABASE_URL = os.getenv("DATABASE_URL")
 
@@ -139,6 +142,25 @@ def index():
 
             try:
                 history_for_input = conversation_history if mode == "aiemon" else []
+                if mode == "concierge":
+                    results = concierge_search(user_text)
+
+                    if results:
+                        reply = "\n".join([f"・{r}" for r in results])
+                    else:
+                        reply = "現在の情報は取得できません"
+
+                    return render_template(
+                    "index.html",
+                    count=get_db_count(),
+                    reply=reply,
+                    date_text=get_date_text(),
+                    user_text=user_text,
+                    today_word=today_word,
+                    tone=tone,
+                    enjoy_words=enjoy_words,
+                    mode=mode,
+                    )
                 response = client.responses.create(
                     model="gpt-4.1-mini",
                     input=[
