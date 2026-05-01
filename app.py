@@ -117,6 +117,16 @@ def get_db_count():
         conn.close()
 
 @app.route("/", methods=["GET", "POST"])
+
+def create_reply(mode, user_text):
+    pass
+
+def save_entry(user_text, reply):
+    pass
+
+def render_index(reply, user_text, tone, today_word, mode):
+    pass
+
 def index():
     mode = session.get("mode", "gift")
     global conversation_history
