@@ -167,6 +167,21 @@ def create_reply(mode, user_text):
     pass
 
 def save_entry(user_text, reply):
+    if reply:
+    db_conn = get_db_connection()
+    db_cur = db_conn.cursor()
+    try:
+        db_cur.execute(
+            "INSERT INTO entries (app_name, user_key, input_text, output_text) VALUES (%s, %s, %s, %s)",
+            ("aiuemon", "user1", user_text, reply)
+        )
+        db_conn.commit()
+    except Exception as e:
+        print("insert error:", e)
+    finally:
+        db_cur.close()
+        db_conn.close()
+    
     pass
 
 def render_index(reply, user_text, tone, today_word, mode):
@@ -229,20 +244,7 @@ def index():
 
                 
 
-                if reply:
-                    db_conn = get_db_connection()
-                    db_cur = db_conn.cursor()
-                    try:
-                        db_cur.execute(
-                            "INSERT INTO entries (app_name, user_key, input_text, output_text) VALUES (%s, %s, %s, %s)",
-                            ("aiuemon", "user1", user_text, reply)
-                        )
-                        db_conn.commit()
-                    except Exception as e:
-                        print("insert error:", e)
-                    finally:
-                        db_cur.close()
-                        db_conn.close()
+
 
             except Exception as e:
                 reply = f"（接続エラー）\n{e}"
