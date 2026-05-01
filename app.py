@@ -126,6 +126,8 @@ def index():
                 system_prompt = "日本語で、やさしく短いエッセイで返答してください。"
             if mode == "aiemon":
                 system_prompt = aiuemon_system_prompt
+            elif mode == "concierge":
+                system_prompt = ""
 
             try:
                 history_for_input = conversation_history if mode == "aiemon" else []
@@ -197,6 +199,8 @@ def toggle_mode():
 
     if current == "gift":
         session["mode"] = "aiemon"
+    elif current == "aiemon":
+        session["mode"] = "concierge"
     else:
         session["mode"] = "gift"
 
