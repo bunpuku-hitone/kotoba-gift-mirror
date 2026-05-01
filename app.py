@@ -168,13 +168,33 @@ def index():
             try:
                 history_for_input = conversation_history if mode == "aiemon" else []
                 if mode == "concierge":
-                    results = concierge_search(user_text)
+                    response = client.responses.create(
+                    model="gpt-4.1-mini",
+                    input=[
+                    {
+                        "role": "system",
+                        "content": "最新の情報をもとに、事実のみを5件、箇条書きで簡潔に出力する。推測は禁止。"
+                    },
+                    {
+                        "role": "user",
+                        "content": user_text
+                    }
+                ]
+            )
 
-                    if results:
-                        reply = "\n".join([f"・{r}" for r in results])
-                    else:
-                        reply = "現在の情報は取得できません"
+    reply = response.output_text.strip()
 
+    return render_template(
+        "index.html",
+        count=get_db_count(),
+        reply=reply,
+        date_text=get_date_text(),
+        user_text=user_text,
+        today_word=today_word,
+        tone=tone,
+        enjoy_words=enjoy_words,
+        mode=mode,
+    )
                     return render_template(
                     "index.html",
                     count=get_db_count(),
