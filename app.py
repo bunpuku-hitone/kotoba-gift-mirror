@@ -157,7 +157,13 @@ def create_reply(mode, user_text):
     )
     #  reply = response.output[0].content[0].text
     reply = response.output_text.strip()
-    
+
+    if mode == "aiemon":
+        conversation_history.append({"role": "user", "content": user_text})
+        conversation_history.append({"role": "assistant", "content": reply})
+        conversation_history = conversation_history[-6:]               
+    if not reply:
+        reply = "（返答が空でした）"
     pass
 
 def save_entry(user_text, reply):
@@ -222,13 +228,7 @@ def index():
                 history_for_input = conversation_history if mode == "aiemon" else []
 
                 
-                    if mode == "aiemon":
-                        conversation_history.append({"role": "user", "content": user_text})
-                        conversation_history.append({"role": "assistant", "content": reply})
-                        conversation_history = conversation_history[-6:]
-                    
-                    if not reply:
-                        reply = "（返答が空でした）"
+
                 if reply:
                     db_conn = get_db_connection()
                     db_cur = db_conn.cursor()
