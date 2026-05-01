@@ -75,20 +75,25 @@ client = OpenAI(
 api_key = os.getenv("OPENAI_API_KEY")
 )
 def concierge_search(query):
-    url = f"https://duckduckgo.com/html/?q={query}"
-    headers = {"User-Agent": "Mozilla/5.0"}
-    res = requests.get(url, headers=headers, timeout=5)
-    soup = BeautifulSoup(res.text, "html.parser")
+    try:
+        url = f"https://duckduckgo.com/html/?q={query}"
+        headers = {"User-Agent": "Mozilla/5.0"}
+        res = requests.get(url, headers=headers, timeout=5)
+        soup = BeautifulSoup(res.text, "html.parser")
 
-    results = []
-    for a in soup.select("a")[:20]:
-        text = a.text.strip()
-        if text and len(text) > 10:
-            results.append(text)
-        if len(results) >= 5:
-            break
+        results = []
+        for a in soup.select("a")[:20]:
+            text = a.text.strip()
+            if text and len(text) > 10:
+                results.append(text)
+            if len(results) >= 5:
+                break
 
-    return results
+        return results
+
+    except BaseException as e:
+        print("concierge_search error:", e)
+        return []
     
 def get_db_count():
     conn = get_db_connection()
