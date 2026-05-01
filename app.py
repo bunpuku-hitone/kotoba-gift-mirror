@@ -80,8 +80,12 @@ def concierge_search(query):
     soup = BeautifulSoup(res.text, "html.parser")
 
     results = []
-    for a in soup.select("a.result__a")[:5]:
-        results.append(a.text)
+    for a in soup.select("a")[:20]:
+        text = a.text.strip()
+        if text and len(text) > 10:
+            results.append(text)
+        if len(results) >= 5:
+            break
 
     return results
     
