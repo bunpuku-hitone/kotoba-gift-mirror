@@ -184,7 +184,7 @@ def index():
 
                     reply = response.output_text.strip()
 
-                        return render_template(
+                    return render_template(
                             "index.html",
                             count=get_db_count(),
                             reply=reply,
