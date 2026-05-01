@@ -184,29 +184,6 @@ def index():
 
                     reply = response.output_text.strip()
 
-                    return render_template(
-                            "index.html",
-                            count=get_db_count(),
-                            reply=reply,
-                            date_text=get_date_text(),
-                            user_text=user_text,
-                            today_word=today_word,
-                            tone=tone,
-                            enjoy_words=enjoy_words,
-                            mode=mode,
-                        )
-
-                    return render_template(
-                    "index.html",
-                    count=get_db_count(),
-                    reply=reply,
-                    date_text=get_date_text(),
-                    user_text=user_text,
-                    today_word=today_word,
-                    tone=tone,
-                    enjoy_words=enjoy_words,
-                    mode=mode,
-                    )
                 response = client.responses.create(
                     model="gpt-4.1-mini",
                     input=[
@@ -237,7 +214,7 @@ def index():
                     
                 if not reply:
                     reply = "（返答が空でした）"
-
+            if reply:
                 db_conn = get_db_connection()
                 db_cur = db_conn.cursor()
                 try:
