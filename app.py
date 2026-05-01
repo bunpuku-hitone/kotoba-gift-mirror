@@ -117,35 +117,25 @@ def get_db_count():
         conn.close()
 
 def create_concierge_reply(user_text):
+    if mode == "concierge":
+        response = client.responses.create(
+        model="gpt-4.1-mini",
+        input=[
+        {
+            "role": "system",
+            "content": "最新の情報をもとに、事実のみを5件、箇条書きで簡潔に出力する。推測は禁止。"
+        },
+        {
+            "role": "user",
+            "content": user_text
+        }
+        ]
+        )
+        reply = response.output_text.strip()
     pass
+return reply
 
 def create_normal_reply(mode, user_text):
-    pass
-
-def create_reply(mode, user_text):
-    if mode == "concierge":
-        return create_concierge_reply(user_text)
-    else:
-        return create_normal_reply(mode, user_text)
-    pass
-
-def create_reply(mode, user_text):
-    if mode == "concierge":
-    response = client.responses.create(
-    model="gpt-4.1-mini",
-    input=[
-    {
-        "role": "system",
-        "content": "最新の情報をもとに、事実のみを5件、箇条書きで簡潔に出力する。推測は禁止。"
-    },
-    {
-        "role": "user",
-        "content": user_text
-    }
-    ]
-    )
-    reply = response.output_text.strip()
-
     response = client.responses.create(
     model="gpt-4.1-mini",
     input=[
@@ -166,15 +156,26 @@ def create_reply(mode, user_text):
         }
     ]
     )
-    #  reply = response.output[0].content[0].text
     reply = response.output_text.strip()
-
     if mode == "aiemon":
         conversation_history.append({"role": "user", "content": user_text})
         conversation_history.append({"role": "assistant", "content": reply})
         conversation_history = conversation_history[-6:]               
     if not reply:
         reply = "（返答が空でした）"
+    pass
+
+def create_reply(mode, user_text):
+    if mode == "concierge":
+        return create_concierge_reply(user_text)
+    else:
+        return create_normal_reply(mode, user_text)
+    pass
+
+def create_reply(mode, user_text):
+
+
+
     pass
 return reply
 
