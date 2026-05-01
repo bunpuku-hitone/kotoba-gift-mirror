@@ -182,21 +182,19 @@ def index():
                 ]
             )
 
-    reply = response.output_text.strip()
+                        reply = response.output_text.strip()
 
-    return render_template(
-        "index.html",
-        count=get_db_count(),
-        reply=reply,
-        date_text=get_date_text(),
-        user_text=user_text,
-        today_word=today_word,
-        tone=tone,
-        enjoy_words=enjoy_words,
-        mode=mode,
-    )
-
-    reply = response.output_text.strip()
+                        return render_template(
+                            "index.html",
+                            count=get_db_count(),
+                            reply=reply,
+                            date_text=get_date_text(),
+                            user_text=user_text,
+                            today_word=today_word,
+                            tone=tone,
+                            enjoy_words=enjoy_words,
+                            mode=mode,
+                        )
 
                     return render_template(
                     "index.html",
