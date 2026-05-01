@@ -195,6 +195,9 @@ def index():
         enjoy_words=enjoy_words,
         mode=mode,
     )
+
+    reply = response.output_text.strip()
+
                     return render_template(
                     "index.html",
                     count=get_db_count(),
