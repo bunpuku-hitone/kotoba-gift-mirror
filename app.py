@@ -117,7 +117,6 @@ def get_db_count():
         conn.close()
 
 def create_concierge_reply(user_text):
-    if mode == "concierge":
         response = client.responses.create(
         model="gpt-4.1-mini",
         input=[
@@ -132,7 +131,6 @@ def create_concierge_reply(user_text):
         ]
         )
         reply = response.output_text.strip()
-    pass
 return reply
 
 def create_normal_reply(mode, user_text):
@@ -163,7 +161,6 @@ def create_normal_reply(mode, user_text):
         conversation_history = conversation_history[-6:]               
     if not reply:
         reply = "（返答が空でした）"
-    pass
 return reply
 
 def create_reply(mode, user_text):
@@ -176,7 +173,7 @@ return reply
 
 def save_entry(user_text, reply):
     if reply:
-    db_conn = get_db_connection()
+        db_conn = get_db_connection()
     db_cur = db_conn.cursor()
     try:
         db_cur.execute(
