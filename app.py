@@ -123,6 +123,10 @@ def create_normal_reply(mode, user_text):
     pass
 
 def create_reply(mode, user_text):
+    if mode == "concierge":
+        return create_concierge_reply(user_text)
+    else:
+        return create_normal_reply(mode, user_text)
     pass
 
 def create_reply(mode, user_text):
