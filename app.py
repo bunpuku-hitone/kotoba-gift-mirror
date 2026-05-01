@@ -158,6 +158,10 @@ def index():
             count += 1
             save_count(count)
 
+            reply = create_reply(mode, user_text)
+            save_entry(user_text, reply)
+            return render_index(reply, user_text, tone, today_word, mode)           
+
             aiuemon_system_prompt = load_aiuemon_prompt()
 
             if is_english(user_text):
