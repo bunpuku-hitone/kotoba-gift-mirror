@@ -207,27 +207,27 @@ def index():
                 #  reply = response.output[0].content[0].text
                 reply = response.output_text.strip()
                 
-                if mode == "aiemon":
-                    conversation_history.append({"role": "user", "content": user_text})
-                    conversation_history.append({"role": "assistant", "content": reply})
-                    conversation_history = conversation_history[-6:]
+                    if mode == "aiemon":
+                        conversation_history.append({"role": "user", "content": user_text})
+                        conversation_history.append({"role": "assistant", "content": reply})
+                        conversation_history = conversation_history[-6:]
                     
-                if not reply:
-                    reply = "（返答が空でした）"
-            if reply:
-                db_conn = get_db_connection()
-                db_cur = db_conn.cursor()
-                try:
-                    db_cur.execute(
-                        "INSERT INTO entries (app_name, user_key, input_text, output_text) VALUES (%s, %s, %s, %s)",
-                        ("aiuemon", "user1", user_text, reply)
-                    )
-                    db_conn.commit()
-                except Exception as e:
-                    print("insert error:", e)
-                finally:
-                    db_cur.close()
-                    db_conn.close()
+                    if not reply:
+                        reply = "（返答が空でした）"
+                if reply:
+                    db_conn = get_db_connection()
+                    db_cur = db_conn.cursor()
+                    try:
+                        db_cur.execute(
+                            "INSERT INTO entries (app_name, user_key, input_text, output_text) VALUES (%s, %s, %s, %s)",
+                            ("aiuemon", "user1", user_text, reply)
+                        )
+                        db_conn.commit()
+                    except Exception as e:
+                        print("insert error:", e)
+                    finally:
+                        db_cur.close()
+                        db_conn.close()
 
             except Exception as e:
                 reply = f"（接続エラー）\n{e}"
