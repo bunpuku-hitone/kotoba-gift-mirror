@@ -127,7 +127,7 @@ def index():
             if mode == "aiemon":
                 system_prompt = aiuemon_system_prompt
             elif mode == "concierge":
-                system_prompt = ""
+                system_prompt = "質問には簡潔に答える。詩的表現は禁止。説明は短く。複数ある場合は箇条書きで出力する。"
 
             try:
                 history_for_input = conversation_history if mode == "aiemon" else []
