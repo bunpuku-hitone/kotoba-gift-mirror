@@ -208,70 +208,46 @@ def render_index(reply, user_text, tone, today_word, mode):
 @app.route("/", methods=["GET", "POST"])
 
 def handle_post(mode, today_word):
+    user_text = request.form.get("user_text", "").strip()
+    tone = request.form.get("tone", "")
+    if not user_text:
+        return render_empty(tone, today_word)
+    return process_enter(mode, user_text, tone, today_word)
     pass
+return render_index("", "", "", today_word, mode)
 
 def render_empty(tone, today_word):
+    return render_template(
+        "index.html",
+        count=get_db_count(),
+        reply="",
+        date_text=get_date_text(),
+        user_text="",
+        today_word=today_word,
+        tone=tone,
+        enjoy_words=enjoy_words,
+    )
     pass
 
 def process_enter(mode, user_text, tone, today_word):
+    count = load_count()
+    count += 1
+    save_count(count)
+
+    reply = create_reply(mode, user_text)
+    save_entry(user_text, reply)
+    return render_index(reply, user_text, tone, today_word, mode)
     pass
+return render_index(reply, user_text, tone, today_word, mode)
 
 def index():
     mode = session.get("mode", "gift")
-    global conversation_history
-    
-    reply = ""
-    user_text = ""
-    tone = ""
     today_word = get_today_word()
 
-
     if request.method == "POST":
+        return handle_post(mode, today_word)
 
-        user_text = request.form.get("user_text", "").strip()
-        tone = request.form.get("tone", "")
-
-        if not user_text:
-            return render_template(
-                "index.html",
-                count=get_db_count(),
-                reply="",
-                date_text=get_date_text(),
-                user_text="",
-                today_word=today_word,
-                tone=tone,
-                enjoy_words=enjoy_words,
-            )
-        else:
-            count = load_count()
-            count += 1
-            save_count(count)
-
-            reply = create_reply(mode, user_text)
-            save_entry(user_text, reply)
-            return render_index(reply, user_text, tone, today_word, mode)           
-
-            aiuemon_system_prompt = load_aiuemon_prompt()
-
-            if is_english(user_text):
-                system_prompt = "Respond ONLY in English. No Japanese."
-            else:
-                system_prompt = "日本語で、やさしく短いエッセイで返答してください。"
-            if mode == "aiemon":
-                system_prompt = aiuemon_system_prompt
-            elif mode == "concierge":
-                system_prompt = (
-                    "コンセルジュモードです。"
-                    "推測・創作は禁止。"
-                    "現在情報・天気・イベント情報は、まだ取得できません。"
-                    "取得できない場合は『現在の情報は取得できません』と答える。"
-                    "回答は簡潔に、箇条書きを優先する。"
-                )
-
-            try:
-                history_for_input = conversation_history if mode == "aiemon" else []
-            except Exception as e:
-                reply = f"（接続エラー）\n{e}"
+    return render_index("", "", "", today_word, mode)
 
     count = get_db_count()
     return render_template(
