@@ -71,7 +71,9 @@ import os
 client = OpenAI(
 api_key = os.getenv("OPENAI_API_KEY")
 )
-
+def concierge_search(query):
+    return []
+    
 def get_db_count():
     conn = get_db_connection()
     cur = conn.cursor()
