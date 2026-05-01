@@ -206,6 +206,16 @@ def render_index(reply, user_text, tone, today_word, mode):
         mode=mode,
     )
 @app.route("/", methods=["GET", "POST"])
+
+def handle_post(mode, today_word):
+    pass
+
+def render_empty(tone, today_word):
+    pass
+
+def process_enter(mode, user_text, tone, today_word):
+    pass
+
 def index():
     mode = session.get("mode", "gift")
     global conversation_history
