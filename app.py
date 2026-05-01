@@ -165,6 +165,7 @@ def create_reply(mode, user_text):
     if not reply:
         reply = "（返答が空でした）"
     pass
+return reply
 
 def save_entry(user_text, reply):
     if reply:
@@ -181,11 +182,22 @@ def save_entry(user_text, reply):
     finally:
         db_cur.close()
         db_conn.close()
-    
     pass
+return
 
 def render_index(reply, user_text, tone, today_word, mode):
-    pass
+    count = get_db_count()
+    return render_template(
+        "index.html",
+        count=count,
+        reply=reply,
+        date_text=get_date_text(),
+        user_text=user_text,
+        today_word=today_word,
+        tone=tone,
+        enjoy_words=enjoy_words,
+        mode=mode,
+    )
 
 def index():
     mode = session.get("mode", "gift")
@@ -241,15 +253,9 @@ def index():
 
             try:
                 history_for_input = conversation_history if mode == "aiemon" else []
-
-                
-
-
-
             except Exception as e:
                 reply = f"（接続エラー）\n{e}"
 
-        
     count = get_db_count()
     return render_template(
         "index.html",
