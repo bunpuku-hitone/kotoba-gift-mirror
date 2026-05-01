@@ -76,7 +76,8 @@ api_key = os.getenv("OPENAI_API_KEY")
 )
 def concierge_search(query):
     url = f"https://duckduckgo.com/html/?q={query}"
-    res = requests.get(url)
+    headers = {"User-Agent": "Mozilla/5.0"}
+    res = requests.get(url, headers=headers, timeout=5)
     soup = BeautifulSoup(res.text, "html.parser")
 
     results = []
