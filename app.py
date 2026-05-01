@@ -75,7 +75,15 @@ client = OpenAI(
 api_key = os.getenv("OPENAI_API_KEY")
 )
 def concierge_search(query):
-    return []
+    url = f"https://duckduckgo.com/html/?q={query}"
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, "html.parser")
+
+    results = []
+    for a in soup.select("a.result__a")[:5]:
+        results.append(a.text)
+
+    return results
     
 def get_db_count():
     conn = get_db_connection()
