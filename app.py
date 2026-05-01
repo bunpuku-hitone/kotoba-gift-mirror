@@ -164,6 +164,7 @@ def create_normal_reply(mode, user_text):
     if not reply:
         reply = "（返答が空でした）"
     pass
+return reply
 
 def create_reply(mode, user_text):
     if mode == "concierge":
