@@ -157,6 +157,7 @@ def index():
             if mode == "aiemon":
                 system_prompt = aiuemon_system_prompt
             elif mode == "concierge":
+                happy_count += 1
                 system_prompt = (
                     "コンセルジュモードです。"
                     "推測・創作は禁止。"
