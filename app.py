@@ -157,7 +157,6 @@ def index():
             if mode == "aiemon":
                 system_prompt = aiuemon_system_prompt
             elif mode == "concierge":
-                count += 1
                 system_prompt = (
                     "コンセルジュモードです。"
                     "推測・創作は禁止。"
@@ -169,6 +168,7 @@ def index():
             try:
                 history_for_input = conversation_history if mode == "aiemon" else []
                 if mode == "concierge":
+                    count += 1
                     response = client.responses.create(
                     model="gpt-4.1-mini",
                     input=[
